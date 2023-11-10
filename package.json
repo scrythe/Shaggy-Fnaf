@@ -1,12 +1,12 @@
 {
   "name": "shaggy-fnaf",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Shaggy Fnaf mini Game in TypeScript. Coding Academy mini Project. ",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "webpack serve --open",
-    "build": "webpack",
-    "watch": "webpack --watch"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "keywords": [
     "Shaggy",
@@ -21,13 +21,7 @@
   "author": "Magomed Alimkhanov",
   "license": "MIT",
   "devDependencies": {
-    "css-loader": "^6.8.1",
-    "html-webpack-plugin": "^5.5.3",
-    "style-loader": "^3.3.3",
-    "ts-loader": "^9.5.0",
-    "typescript": "^5.2.2",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
   }
 }
