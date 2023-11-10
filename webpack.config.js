@@ -7,6 +7,7 @@ module.exports = {
   devtool: "inline-source-map",
   devServer: {
     static: "./dist",
+    watchFiles: ["./src"],
   },
   module: {
     rules: [
@@ -19,7 +20,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "Shaggy Fnaf mini Game",
+      filename: "index.html",
+      template: "./src/index.html",
     }),
   ],
   resolve: {
