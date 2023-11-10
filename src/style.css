@@ -1,0 +1,32 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  width: 100vw;
+  display: grid;
+  grid-template-rows: 1fr 3em;
+  grid-template-areas:
+    "gameArea"
+    "controls";
+  background: #1e402b;
+}
+
+main {
+  grid-area: gameArea;
+  position: relative;
+}
+
+footer {
+  grid-area: controls;
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 0.5em;
+}
