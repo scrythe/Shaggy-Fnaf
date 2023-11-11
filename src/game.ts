@@ -1,34 +1,40 @@
 class Game {
   private FPS = 60;
   private running?: boolean;
-  private currentSpeed: number;
-  private ACCELERATION = 5;
-  private MAXSPEED = 5;
-  private alpha: number;
   private beta: number;
   private gamma: number;
-  private speed: { x: number; y: number };
+  private main: HTMLElement;
   private player: HTMLImageElement;
   private currentPos: { x: number; y: number };
   private test: HTMLDivElement;
+  private gameWidth = innerWidth;
+  private gameHeight = innerHeight;
+  private playerWidth: number;
+  private playerHeight: number;
 
-  constructor(player: HTMLImageElement, test: HTMLDivElement) {
+  constructor(
+    main: HTMLElement,
+    player: HTMLImageElement,
+    test: HTMLDivElement,
+  ) {
     const fpsDuration = 1000 / this.FPS;
-    this.currentSpeed = 0;
-    this.alpha = 0;
     this.beta = 0;
     this.gamma = 0;
-    this.speed = { x: 0, y: 0 };
     setInterval(() => {
       this.update();
     }, fpsDuration);
+    this.main = main;
     this.player = player;
     this.test = test;
     this.currentPos = { x: 0, y: 0 };
+    this.playerWidth = this.player.clientWidth;
+    this.playerHeight = this.player.clientHeight;
   }
 
   start() {
     this.running = true;
+    this.gameWidth = this.main.clientWidth;
+    this.gameHeight = this.main.clientHeight;
   }
 
   pause() {
@@ -36,40 +42,36 @@ class Game {
   }
 
   input(e: DeviceOrientationEvent) {
-    if (!e.alpha) return;
-    this.alpha = e.alpha;
-    //if (this.alpha >= 90) this.alpha = 90;
-    //if (this.alpha <= -90) this.alpha = -90;
-
     if (!e.beta) return;
     this.beta = e.beta;
-
     if (!e.gamma) return;
     this.gamma = e.gamma;
   }
 
   private update() {
     if (!this.running) return;
-    if (this.currentSpeed <= this.MAXSPEED)
-      this.currentSpeed *= this.ACCELERATION;
-    this.speed = {
-      x: Math.cos(this.alpha) * this.currentSpeed,
-      y: Math.sin(this.beta) * this.currentSpeed,
-    };
-    this.speed;
-    this.test;
-
-    //this.flightLength += this.maxSpeed;
-    //console.log(this.speed);
     this.movePlayer();
   }
 
   private movePlayer() {
-    this.currentPos.x += this.beta;
-    this.currentPos.y -= this.gamma / 2;
-    console.log(this.currentPos.x);
+    if (this.gamma < 0) {
+      this.currentPos.x += this.beta;
+      this.currentPos.y -= (this.gamma + 90) / 4;
+    }
+    this.currentPos.y += 10;
+    this.borderCollision();
+    this.test.innerHTML = "" + this.gamma;
     this.player.style.left = this.currentPos.x + "px";
     this.player.style.top = this.currentPos.y + "px";
+  }
+
+  private borderCollision() {
+    if (this.currentPos.x + this.playerWidth > this.gameWidth)
+      this.currentPos.x = this.gameWidth - this.playerWidth;
+    if (this.currentPos.x < 0) this.currentPos.x = 0;
+    if (this.currentPos.y + this.playerHeight > this.gameHeight)
+      this.currentPos.y = this.gameHeight - this.playerHeight;
+    if (this.currentPos.y < 0) this.currentPos.y = 0;
   }
 }
 
