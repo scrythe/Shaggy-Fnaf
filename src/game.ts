@@ -56,6 +56,8 @@ class Game {
       x: Math.cos(this.alpha) * this.currentSpeed,
       y: Math.sin(this.beta) * this.currentSpeed,
     };
+    this.speed;
+    this.test;
 
     //this.flightLength += this.maxSpeed;
     //console.log(this.speed);

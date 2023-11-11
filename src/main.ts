@@ -12,7 +12,10 @@ const startGameSec: HTMLTableSectionElement | null =
 document.querySelector("#playIcon")?.addEventListener("click", () => {
   startGameSec!.style.display = "none";
   document.body.requestFullscreen();
-  if (screen.orientation) screen.orientation.lock!("landscape");
+  interface ExtendedScreenOrientation extends ScreenOrientation {
+    lock(orientation: string): Promise<void>;
+  }
+  (screen.orientation as ExtendedScreenOrientation).lock("landscape");
   game.start();
 });
 
