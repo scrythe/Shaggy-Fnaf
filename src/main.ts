@@ -2,19 +2,26 @@ import "./style.css";
 import Game from "./game";
 // import PlayIconPressed from "./playIconPressed.png";
 
-const game = new Game();
+const player: HTMLImageElement = document.querySelector("#player")!;
+const test: HTMLDivElement = document.querySelector("#test")!;
 
-document.querySelector("#start")?.addEventListener("click", () => {
-  game.startGame();
-});
+const game = new Game(player, test);
 
 const startGameSec: HTMLTableSectionElement | null =
   document.querySelector("#startGame");
 document.querySelector("#playIcon")?.addEventListener("click", () => {
   startGameSec!.style.display = "none";
-  game.startGame();
+  document.body.requestFullscreen();
+  if (screen.orientation) screen.orientation.lock!("landscape");
+  game.start();
+});
+
+document.querySelector("#pause")?.addEventListener("click", () => {
+  game.pause();
 });
 
 document.querySelector("#stop")?.addEventListener("click", () => {
-  game.stopGame();
+  game.pause();
 });
+
+addEventListener("deviceorientation", (e) => game.input(e));

@@ -47,6 +47,11 @@ main {
   width: 10em;
 }
 
+#player {
+  width: 4em;
+  position: absolute;
+}
+
 footer {
   margin-top: auto;
   background: #123839;
