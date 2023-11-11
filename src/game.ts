@@ -10,7 +10,11 @@ class Game {
   private gameHeight = innerHeight;
   private playerWidth: number;
   private playerHeight: number;
-  private GRAVITY = 8;
+  private GRAVITY = 6;
+  private FUELINCREASE = 8;
+  private flyFuel: number;
+  private MAXFUEL = 1200;
+  private isFlying: boolean;
 
   constructor(main: HTMLElement, player: HTMLImageElement) {
     const fpsDuration = 1000 / this.FPS;
@@ -24,6 +28,8 @@ class Game {
     this.currentPos = { x: 0, y: 0 };
     this.playerWidth = this.player.clientWidth;
     this.playerHeight = this.player.clientHeight;
+    this.flyFuel = this.MAXFUEL;
+    this.isFlying = false;
   }
 
   start() {
@@ -46,24 +52,31 @@ class Game {
   private update() {
     if (!this.running) return;
     this.movePlayer();
+    this.flyFuel += this.FUELINCREASE;
+    if (this.flyFuel >= this.MAXFUEL) this.flyFuel = this.MAXFUEL;
   }
 
   private movePlayer() {
     if (this.gamma < 0) {
       this.currentPos.x += this.beta;
-      this.jumping();
+      this.flying();
     }
     this.currentPos.y += this.GRAVITY;
     this.borderCollision();
     this.animateMove();
   }
 
-  private jumping() {
+  private flying() {
+    if (!this.isFlying) return;
     const gammaPosVec = this.gamma + 90 - 20;
     if (gammaPosVec > 0) {
       const deltaVelocity = gammaPosVec / 6;
       const velocity = Math.pow(deltaVelocity, 1.4);
+      const fuelConsumption = Math.pow(velocity / 2, 2);
+      if (this.flyFuel - fuelConsumption < 0) return (this.isFlying = false);
+      this.flyFuel -= fuelConsumption;
       this.currentPos.y -= velocity;
+      console.log(`flyFuel: ${this.flyFuel}`);
       // console.log(`deltaVelocity: ${deltaVelocity}`);
       // console.log(`velocity: ${velocity}`);
     }
@@ -80,8 +93,11 @@ class Game {
     if (this.currentPos.x + this.playerWidth > this.gameWidth)
       this.currentPos.x = this.gameWidth - this.playerWidth;
     if (this.currentPos.x < 0) this.currentPos.x = 0;
-    if (this.currentPos.y + this.playerHeight > this.gameHeight)
+    if (this.currentPos.y + this.playerHeight > this.gameHeight) {
       this.currentPos.y = this.gameHeight - this.playerHeight;
+      this.isFlying = true;
+      this.flyFuel += this.FUELINCREASE * 2;
+    }
     if (this.currentPos.y < 0) this.currentPos.y = 0;
   }
 }
