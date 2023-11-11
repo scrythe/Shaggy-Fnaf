@@ -6,8 +6,9 @@ interface ExtendedScreenOrientation extends ScreenOrientation {
 }
 const main = document.querySelector("main")!;
 const player: HTMLImageElement = document.querySelector("#player")!;
+const flyFuelBar: HTMLDivElement = document.querySelector("#fly-fuel div")!;
 
-const game = new Game(main, player);
+const game = new Game(main, player, flyFuelBar);
 
 const startGameSec: HTMLTableSectionElement | null =
   document.querySelector("#startGame");
