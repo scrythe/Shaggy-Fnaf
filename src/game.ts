@@ -6,17 +6,13 @@ class Game {
   private main: HTMLElement;
   private player: HTMLImageElement;
   private currentPos: { x: number; y: number };
-  private test: HTMLDivElement;
   private gameWidth = innerWidth;
   private gameHeight = innerHeight;
   private playerWidth: number;
   private playerHeight: number;
+  private GRAVITY = 8;
 
-  constructor(
-    main: HTMLElement,
-    player: HTMLImageElement,
-    test: HTMLDivElement,
-  ) {
+  constructor(main: HTMLElement, player: HTMLImageElement) {
     const fpsDuration = 1000 / this.FPS;
     this.beta = 0;
     this.gamma = 0;
@@ -25,7 +21,6 @@ class Game {
     }, fpsDuration);
     this.main = main;
     this.player = player;
-    this.test = test;
     this.currentPos = { x: 0, y: 0 };
     this.playerWidth = this.player.clientWidth;
     this.playerHeight = this.player.clientHeight;
@@ -56,11 +51,27 @@ class Game {
   private movePlayer() {
     if (this.gamma < 0) {
       this.currentPos.x += this.beta;
-      this.currentPos.y -= (this.gamma + 90) / 4;
+      this.jumping();
     }
-    this.currentPos.y += 10;
+    this.currentPos.y += this.GRAVITY;
     this.borderCollision();
-    this.test.innerHTML = "" + this.gamma;
+    this.animateMove();
+  }
+
+  private jumping() {
+    const gammaPosVec = this.gamma + 90 - 20;
+    if (gammaPosVec > 0) {
+      const deltaVelocity = gammaPosVec / 6;
+      const velocity = Math.pow(deltaVelocity, 1.4);
+      this.currentPos.y -= velocity;
+      // console.log(`deltaVelocity: ${deltaVelocity}`);
+      // console.log(`velocity: ${velocity}`);
+    }
+    // console.log(`gamme: ${this.gamma}`);
+    // console.log(`gammaPosVec: ${gammaPosVec}`);
+  }
+
+  private animateMove() {
     this.player.style.left = this.currentPos.x + "px";
     this.player.style.top = this.currentPos.y + "px";
   }
