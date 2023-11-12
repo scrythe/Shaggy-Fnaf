@@ -10,8 +10,8 @@ const flyFuelBar: HTMLDivElement = document.querySelector("#fly-fuel div")!;
 
 const game = new Game(main, player, flyFuelBar);
 
-const startGameSec: HTMLTableSectionElement | null =
-  document.querySelector("#startGame");
+const startGameSec: HTMLTableSectionElement =
+  document.querySelector("#startGame")!;
 document.querySelector("#playIcon")?.addEventListener("click", () => {
   startGameSec!.style.display = "none";
   document.querySelector("html")?.requestFullscreen();
@@ -25,8 +25,11 @@ document.querySelector("#pause")?.addEventListener("click", () => {
   game.pause();
 });
 
+const gameOverSec: HTMLTableSectionElement =
+  document.querySelector("#gameOver")!;
 document.querySelector("#stop")?.addEventListener("click", () => {
-  game.pause();
+  gameOverSec!.style.display = "block";
+  game.gameOver();
 });
 
 addEventListener("deviceorientation", (e) => game.input(e));

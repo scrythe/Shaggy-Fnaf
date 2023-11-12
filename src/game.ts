@@ -32,20 +32,30 @@ class Game {
     this.player = player;
     this.flyFuelBar = flyFuelBar;
     this.currentPos = { x: 0, y: 0 };
-    this.playerWidth = this.player.clientWidth;
-    this.playerHeight = this.player.clientHeight;
+    this.playerWidth = 0;
+    this.playerHeight = 0;
     this.flyFuel = this.MAXFUEL;
     this.isFlying = false;
   }
 
   start() {
+    this.player.style.display = "block";
+    this.flyFuelBar.parentElement!.style.display = "flex";
     this.running = true;
     this.gameWidth = this.main.clientWidth;
     this.gameHeight = this.main.clientHeight;
+    this.playerWidth = this.player.clientWidth;
+    this.playerHeight = this.player.clientHeight;
   }
 
   pause() {
+    this.running = !this.running;
+  }
+
+  gameOver() {
     this.running = false;
+    this.player.style.display = "none";
+    this.flyFuelBar.parentElement!.style.display = "none";
   }
 
   input(e: DeviceOrientationEvent) {
@@ -83,12 +93,7 @@ class Game {
       if (this.flyFuel - fuelConsumption < 0) return (this.isFlying = false);
       this.flyFuel -= fuelConsumption;
       this.currentPos.y -= velocity;
-      console.log(`flyFuel: ${this.flyFuel}`);
-      // console.log(`deltaVelocity: ${deltaVelocity}`);
-      // console.log(`velocity: ${velocity}`);
     }
-    // console.log(`gamme: ${this.gamma}`);
-    // console.log(`gammaPosVec: ${gammaPosVec}`);
   }
 
   private animateMove() {
