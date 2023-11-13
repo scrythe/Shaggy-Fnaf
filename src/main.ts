@@ -1,4 +1,4 @@
-import "./style.css";
+import "./assets/style.css";
 import Game from "./game";
 import InputHandler from "./input";
 // import PlayIconPressed from "./playIconPressed.png";
