@@ -1,5 +1,6 @@
 import "./style.css";
 import Game from "./game";
+import InputHandler from "./input";
 // import PlayIconPressed from "./playIconPressed.png";
 //
 interface ExtendedScreenOrientation extends ScreenOrientation {
@@ -14,7 +15,8 @@ const main = document.querySelector("main")!;
 const player: HTMLImageElement = document.querySelector("#player")!;
 const flyFuelBar: HTMLDivElement = document.querySelector("#fly-fuel div")!;
 
-const game = new Game(main, player, flyFuelBar);
+const inputHandler = new InputHandler();
+const game = new Game(main, player, flyFuelBar, inputHandler);
 
 const startGameSec: HTMLTableSectionElement =
   document.querySelector("#startGame")!;
@@ -45,7 +47,13 @@ function startGame() {
   if (typeof requestPermission === "function") {
     requestPermission().then((response: string) => {
       if (response == "granted")
-        addEventListener("deviceorientation", (e) => game.input(e));
+        addEventListener("deviceorientation", (e) =>
+          inputHandler.motionInput(e),
+        );
     });
-  } else addEventListener("deviceorientation", (e) => game.input(e));
+  } else
+    addEventListener("deviceorientation", (e) => inputHandler.motionInput(e));
 }
+
+addEventListener("keyup", (e) => inputHandler.keyBoardInput(e));
+addEventListener("keydown", (e) => inputHandler.keyBoardInput(e));

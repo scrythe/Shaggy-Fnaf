@@ -1,8 +1,9 @@
+import InputHandler from "./input";
+
 class Game {
   private FPS = 60;
   private running?: boolean;
-  private beta: number;
-  private gamma: number;
+  private inputHandler: InputHandler;
   private main: HTMLElement;
   private player: HTMLImageElement;
   private currentPos: { x: number; y: number };
@@ -21,10 +22,10 @@ class Game {
     main: HTMLElement,
     player: HTMLImageElement,
     flyFuelBar: HTMLDivElement,
+    inputHandler: InputHandler,
   ) {
     const fpsDuration = 1000 / this.FPS;
-    this.beta = 0;
-    this.gamma = 0;
+    this.inputHandler = inputHandler;
     setInterval(() => {
       this.update();
     }, fpsDuration);
@@ -58,13 +59,6 @@ class Game {
     this.flyFuelBar.parentElement!.style.display = "none";
   }
 
-  input(e: DeviceOrientationEvent) {
-    if (!e.beta) return;
-    this.beta = e.beta;
-    if (!e.gamma) return;
-    this.gamma = e.gamma;
-  }
-
   private update() {
     if (!this.running) return;
     this.movePlayer();
@@ -74,8 +68,8 @@ class Game {
   }
 
   private movePlayer() {
-    if (this.gamma < 0) {
-      this.currentPos.x += this.beta;
+    if (this.inputHandler.gamma < 0) {
+      this.currentPos.x += this.inputHandler.beta;
       this.flying();
     }
     this.currentPos.y += this.GRAVITY;
@@ -85,7 +79,7 @@ class Game {
 
   private flying() {
     if (!this.isFlying) return;
-    const gammaPosVec = this.gamma + 90 - 20;
+    const gammaPosVec = this.inputHandler.gamma + 90 - 20;
     if (gammaPosVec > 0) {
       const deltaVelocity = gammaPosVec / 6;
       const velocity = Math.pow(deltaVelocity, 1.4);
