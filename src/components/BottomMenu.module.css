@@ -1,0 +1,19 @@
+#bottomMenu {
+  margin-top: auto;
+  background: #123839;
+  border-top: 1px solid #1f1f1f;
+  text-align: center;
+  padding: 0.8em;
+}
+
+button {
+  background: #f7f3ec;
+  border-radius: 0.5em;
+  border: none;
+  padding: 0.5em 1em;
+  margin: 0 1em;
+}
+
+button:focus {
+  background: #dccfd8;
+}
