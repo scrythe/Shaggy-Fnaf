@@ -12,24 +12,25 @@ class Game {
   private playerWidth: number;
   private playerHeight: number;
   private movementHandler: MovementHandler;
+  private inputHandler: InputHandler;
 
   constructor(
     main: HTMLElement,
     player: HTMLImageElement,
     flyFuelBar: HTMLDivElement,
-    inputHandler: InputHandler,
   ) {
     const fpsDuration = 1000 / this.FPS;
     setInterval(() => {
       this.update();
     }, fpsDuration);
+    this.inputHandler = new InputHandler();
     this.main = main;
     this.player = player;
     this.flyFuelBar = flyFuelBar;
     this.playerWidth = 0;
     this.playerHeight = 0;
     this.movementHandler = new MovementHandler(
-      inputHandler,
+      this.inputHandler,
       this.flyFuelBar,
       this.gameWidth,
       this.gameHeight,

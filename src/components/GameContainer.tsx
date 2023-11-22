@@ -3,7 +3,6 @@ import playIcon from "../assets/playIcon.png";
 import shaggyImg from "../assets/shaggy.png";
 import { Show, createSignal } from "solid-js";
 import Game from "../game/game";
-import InputHandler from "../game/input";
 
 function GameContainer() {
   let gameContainer: HTMLElement;
@@ -13,28 +12,13 @@ function GameContainer() {
 
   const startGame = () => {
     setRunning(true);
-    const inputHandler = new InputHandler();
-    const game = new Game(gameContainer, playerEl, flyFuelDiv, inputHandler);
+    const game = new Game(gameContainer, playerEl, flyFuelDiv);
 
     document.querySelector("html")!.requestFullscreen();
     (screen.orientation as ExtendedScreenOrientation)
       .lock("landscape")
       .then(() => game.start())
       .catch(() => game.start());
-
-    const requestPermission = (
-      DeviceOrientationEvent as unknown as DeviceOrientationEventiOS
-    ).requestPermission;
-
-    if (typeof requestPermission === "function") {
-      requestPermission().then((response: string) => {
-        if (response == "granted")
-          addEventListener("deviceorientation", (e) =>
-            inputHandler.motionInput(e),
-          );
-      });
-    } else
-      addEventListener("deviceorientation", (e) => inputHandler.motionInput(e));
   };
 
   return (

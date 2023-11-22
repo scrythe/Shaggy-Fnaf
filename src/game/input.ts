@@ -1,3 +1,7 @@
+const requestPermission = (
+  DeviceOrientationEvent as unknown as DeviceOrientationEventiOS
+).requestPermission;
+
 type Key = { pressed: boolean };
 
 interface Keys {
@@ -43,6 +47,7 @@ class InputHandler {
       left: { pressed: false },
       right: { pressed: false },
     };
+    this.requestDeviceMotion();
   }
 
   motionInput(e: DeviceOrientationEvent) {
@@ -57,6 +62,14 @@ class InputHandler {
     const pressedKey = keyMap[key];
     if (type == "keyup") this._keys[pressedKey].pressed = true;
     else if (type == "keydown") this._keys[pressedKey].pressed = false;
+  }
+
+  async requestDeviceMotion() {
+    if (typeof requestPermission === "function") {
+      const permissionResponse = await requestPermission();
+      if (permissionResponse == "granted")
+        addEventListener("deviceorientation", (e) => this.motionInput(e));
+    } else addEventListener("deviceorientation", (e) => this.motionInput(e));
   }
 
   get beta() {
